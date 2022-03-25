@@ -3,14 +3,25 @@ import {join} from 'path';
 import {URL} from 'url';
 
 async function createWindow() {
+  const {setVibrancy} = require("electron-acrylic-window");
   const browserWindow = new BrowserWindow({
     show: false, // Use 'ready-to-show' event to show window
+    visualEffectState:'active',
     webPreferences: {
       nativeWindowOpen: true,
       webviewTag: false, // The webview tag is not recommended. Consider alternatives like iframe or Electron's BrowserView. https://www.electronjs.org/docs/latest/api/webview-tag#warning
       preload: join(__dirname, '../../preload/dist/index.cjs'),
     },
   });
+
+  const vb_op= {
+    theme: String ('dark'),
+    effect: String ('blur'),
+    maximumRefreshRate: Number (60),
+    disableOnBlur: Boolean (true)
+ }
+
+  setVibrancy(browserWindow,vb_op)
 
   /**
    * If you install `show: true` then it can cause issues when trying to close the window.
